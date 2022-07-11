@@ -1,20 +1,13 @@
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <div><h3>哈喽</h3></div>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-
+<script setup>
+// import Home from './views/Home'
+// import Login from './views/Login'
 </script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
