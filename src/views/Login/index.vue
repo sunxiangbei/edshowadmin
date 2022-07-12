@@ -53,6 +53,9 @@
 import {ref,reactive} from "vue";
 import {useRouter,useRoute} from "vue-router"
 import { PersonOutline, LockClosedOutline} from '@vicons/ionicons5';
+import {useMessage} from 'naive-ui'
+const message=useMessage()
+window.$message=useMessage()
 //这里用红线会报错，不是因为写错了，而是因为编译器不知道是什么，需要去tsconfig.json中进行配置
 // import request from "@/utils/request"; 登录页面写到了user全局里面
 // //引入二次封装axios
@@ -105,7 +108,8 @@ const handleSubmit=(e:Event)=>{
       console.log(res)
       //  请求成功关闭登陆中loading
       loading.value=false
-      alert('登录成功')
+      // alert('登录成功')
+      message.success('登录成功')
       //保存本地tokey  这个调整到了全局状态中了
       // localStorage.setItem('token',res.access_token)
       // console.log(res.access_token)

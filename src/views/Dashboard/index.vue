@@ -1,5 +1,5 @@
 <template>
-  <div><h3>dashboard</h3></div>
+  <div><h3>控制台</h3></div>
 </template>
 
 <script>

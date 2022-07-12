@@ -2,6 +2,8 @@
 import axios from "axios";
 import {useRouter} from "vue-router";
 import router from "@/router";
+import {useMessage} from "naive-ui";
+const message=useMessage()
 //创建axios对象
 const request=axios.create({
     baseURL:"https://api.shop.eduwork.cn/",//管理后台要使用的接口基地址
@@ -26,7 +28,8 @@ request.interceptors.request.use((config)=>{
 
 //定义响应拦截器
 request.interceptors.response.use((response)=>{
-    // console.log(response)
+    console.log(response)
+
     return response
 },error => {
     // if(error.response.status==401){
@@ -34,6 +37,27 @@ request.interceptors.response.use((response)=>{
     //     router.push({path:'/Login'})
     // }
     //    报错时候会抛出一个错误信息
+    const {response}=error
+    console.log(response)
+    switch (response.status){
+        case 401:
+            window.$message.error('登录失败')
+            localStorage.removeItem('token')
+            setTimeout(()=>{
+                window.location.href='/login'
+            },500)
+            break;
+        case 404:
+            window.$message.error('接口不存在')
+            break;
+        case 500:
+        case 502:
+            window.$message.error('网络异常')
+            break;
+        case 422:
+            window.$message.error('参数错误')
+            break;
+    }
     return Promise.reject(error)
 })
 

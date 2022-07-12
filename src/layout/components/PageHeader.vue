@@ -18,27 +18,30 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
-// import {renderIcon} from "@/utils";
-// import {logout} from '@/api/auth';
+import {renderIcon} from "@/utils";
+import {logout} from '@/api/auth';
 import {
   LogOutOutline as LogoutIcon
 } from '@vicons/ionicons5'
 import {useUserStore} from '@/store/user';
 const userStore = useUserStore()
+
+// userStore.getUserInfo()
+
 const options = ref([
   {
     label: '退出登录',
     key: 'logout',
-    // icon: renderIcon(LogoutIcon)
+    icon: renderIcon(LogoutIcon)
   }
 ])
 const select = (key:string) =>{
   switch (key) {
     case 'logout':
-      // logout().then(()=>{
-      //   localStorage.removeItem('token');
-      //   window.location.reload();
-      // })
+      logout().then(()=>{
+        localStorage.removeItem('token');
+        window.location.reload();
+      })
       break;
     default:
       break;

@@ -35,6 +35,12 @@ export const useUserStore = defineStore({
             return this.permissions
         },
         getUserInfo():object{
+            //判断this.info是否是空对象,判断他id就知道是否是空对象
+            if(this.info?.id){
+                console.log(11111)
+            }else{
+                console.log(22222)
+            }
             return this.info
         }
     },

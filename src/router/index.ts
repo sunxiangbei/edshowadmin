@@ -1,42 +1,51 @@
 //导入路由
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 //导入路由组件
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login/index.vue'
-import Dashboard from '@/views/Dashboard/index.vue'
+//在外面导入的路由很多的情况下，可以把这些封装成一个函数
+//引入当前目录下的所有ts
+const modues=import.meta.globEager('./modues/**/*.ts');
+//定义一个route的结构是数组，用来接收上面导入函数中所有要导入的ts文件
+const routeModuleList:RouteRecordRaw[]=[]
+//遍历函数中的文件，导入数组中
+Object.keys(modues).forEach((key)=>{
+    const mod=modues[key].default || {}
+    const modList=Array.isArray(mod)?[...mod]:[mod]
+    routeModuleList.push(...modList)
+})
+// console.log(routeModuleList)
 //引入把dashboard解剖出去的路由
-import dashboard from "./modues/dashboard";
-
-
+//这样一个一个引入会积累很多代码，可以把它们进行一个函数的封装遍历。见上面
+// import dashboard from "./modues/dashboard";
+// import user from "@/router/modues/user";
+// import order from "@/router/modues/order";
 //定义路由跳转
 const routes = [
     {
       path: '/',
       redirect: '/Login'
     },
-
     {
       path: '/Home',
       component: Home ,
-      meta:{title:'首页'}
+      name:'home',
+      meta:{title:'首页'},
     },
-
     {
       path: '/Login',
       component: Login ,
       name:'Login',
-      meta:{title:'登录页'}
+      meta:{title:'登录'}
     },
-
     // {  把Dashboard路由分解出去，因为路由太多会累赘，进行重新定义
     //   path:'/Dashboard',
     //   component: Dashboard,
     //   meta:{title:'控制台'}
     // }
 ]
-
 //>把所有设置好的路由进行，展开赋值
-const baseRoutes=[...routes,...dashboard]
+const baseRoutes=[...routes,...routeModuleList /*...dashboard,...user,...order*/]
 
 
 //创建路由
@@ -87,4 +96,5 @@ router.beforeEach((to,from,next)=>{
     next()
 })
 //暴露路由
+export {routeModuleList}
 export default router
