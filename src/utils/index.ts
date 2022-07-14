@@ -8,7 +8,7 @@ export const renderIcon = (icon: Component):Component=> {
 export function generatorMenu(routerMap:Array<any>){
     //把放在大数组里面的路由设置上sort属性，对列表进行sort排序
     routerMap.sort((a, b)=>a.meta.sort - b.meta.sort)
-    console.log(routerMap)
+    // console.log(routerMap)
     //用map遍历这个数组
     let result=routerMap.map((item)=>{
         let menu={
@@ -19,7 +19,7 @@ export function generatorMenu(routerMap:Array<any>){
         if(item.children && item.children.length>1){
             menu.children=generatorMenu(item.children)
         }
-        console.log(menu)
+        // console.log(menu)
         return menu
     })
     return  result

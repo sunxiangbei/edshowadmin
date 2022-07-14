@@ -28,7 +28,7 @@ request.interceptors.request.use((config)=>{
 
 //定义响应拦截器
 request.interceptors.response.use((response)=>{
-    console.log(response)
+    // console.log(response)
 
     return response
 },error => {
@@ -38,7 +38,7 @@ request.interceptors.response.use((response)=>{
     // }
     //    报错时候会抛出一个错误信息
     const {response}=error
-    console.log(response)
+    // console.log(response)
     switch (response.status){
         case 401:
             window.$message.error('登录失败')

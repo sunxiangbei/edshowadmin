@@ -4,7 +4,7 @@
     <div>
       <span class="text-slate-400 pr-1">首页</span> / <span class="pl-1">用户列表</span>
       <div class="pt-3 text-xl text-black font-medium">
-        用户列表
+        用户管理
       </div>
     </div>
   </div>
@@ -25,14 +25,20 @@
         </n-form-item>
 
         <n-form-item class="ml-auto">
-          <n-button attr-type="button" @click="">
+          <n-button class="mr-4" attr-type="button" @click="searchRehoid">
+            重置
+          </n-button>
+          <n-button attr-type="button" @click="searchSubmit">
             搜索
           </n-button>
         </n-form-item>
       </n-form>
     </div>
     <div class="pt-4 bg-white">
-      <div class="text-md pl-4 py-4">用户列表</div>
+      <div class="text-md px-6 py-4 flex">
+        <span>用户列表</span>
+        <span class="ml-auto"><NButton type="info" @click="showModal=true">新建用户</NButton></span>
+      </div>
       <div>
         <n-data-table
             :columns="columns"
@@ -41,81 +47,147 @@
             :bordered="false"
         />
         <div class="p-4 flex justify-end pr-10">
-          <n-pagination v-model:page="page" :page-count="100" />
+          <n-pagination v-model:page="page" @update:page="updatePage" :page-count="totalPages" />
         </div>
       </div>
     </div>
+    <AddUser :showModal="showModal" @checxShowModal="checxShowModal"></AddUser>
   </div>
 </div>
 
 </template>
 
 <script lang="ts" setup>
-import { h ,defineComponent,ref} from 'vue'
-import { NButton, useMessage } from 'naive-ui'
-import type { DataTableColumns } from 'naive-ui'
+import { h ,ref,onMounted} from 'vue'
+import {users} from "@/api/users";
+import { NButton, useMessage ,NAvatar,NSwitch} from 'naive-ui'
+
+import AddUser from '@/views/user/components/AddUser.vue'
 const page=ref(1)
-type Song = {
-  no: number
-  title: string
-  length: string
-}
 const message=useMessage()
-const createColumns = ({
-                         play
-                       }: {
-  play: (row: Song) => void
-}): DataTableColumns<Song> => {
-  return [
-    {
-      title: 'No',
-      key: 'no'
-    },
-    {
-      title: 'Title',
-      key: 'title'
-    },
-    {
-      title: 'Length',
-      key: 'length'
-    },
-    {
-      title: 'Action',
-      key: 'actions',
-      render (row) {
-        return h(
-            NButton,
-            {
-              strong: true,
-              tertiary: true,
-              size: 'small',
-              onClick: () => play(row)
-            },
-            { default: () => 'Play' }
-        )
-      }
+const data=ref([])
+
+const totalPages=ref(0)
+
+const columns =  [
+  {
+    title: '头像',
+    key: 'avatar_url',
+    render(row:any){
+        //NAvatar是写一个组件对组件的引用
+      return h(NAvatar,{round:true,src:row.avatar_url,size:'medium'}
+        // 'img',这个是写一个属性，对属性操作
+        // {src:row.avatar_url,class:'w-10 h-10 rounded-full'}
+      )
     }
-  ]
-}
-const data: Song[] = [
-  { no: 3, title: 'Wonderwall', length: '4:18' },
-  { no: 4, title: "Don't Look Back in Anger", length: '4:48' },
-  { no: 12, title: 'Champagne Supernova', length: '7:27' }
+  },
+  {
+    title: '姓名',
+    key: 'name'
+  },
+  {
+    title: '邮箱',
+    key: 'email'
+  },
+  {
+    title: '是否禁用',
+    key: 'is_locked',
+    render(row:any){
+      return h(NSwitch,{
+        size:'small',
+        color:'#1890ff',
+        activeColor:"#52c41a",
+        inactiveColor:'#d9d9d9',
+        activeValue:1,
+        inactiveValue:0,
+        value:row.is_locked==1?false:true,
+          }
+      )
+    }
+  },
+  {
+    title: '创建时间',
+    key: 'created_at',
+  },
+  {
+    title: '操作',
+    key: 'created_at',
+    render(row:any){
+      return h(NButton, {
+        size:'small',
+        color:'#1890ff',
+        strong:true,
+        onclick:()=>{
+            message.info('正在编辑'+row.name)
+        }
+      },'编辑')
+    }
+  },
 ]
 
-const columns = createColumns({
-  play (row: Song) {
-    message.info(`Play ${row.title}`)
-  }
-})
 const pagination= ref(false as const)
 
 const formSearch=ref({
   name:'',
   email:'',
 })
-
-
+const showModal=ref(false)
+//渲染整个页面请求数据
+onMounted(async ()=>{
+  getUserList({})
+  //传入一个空对象
+  // const {data:res}=await users({})
+  // data.value=res.data
+  // totalPages.value=res.meta.pagination.total_pages
+  // page.value=res.meta.pagination.current_page
+})
+//点击分页进行重新请求变换分页里面的数据
+//通过形参传入一个参数类型是数字类型这个是点第几页输出第几页
+const updatePage=async (pageNum:number)=>{
+  getUserList({
+    current:pageNum,
+    name:formSearch.value.name,
+    email:formSearch.value.email,
+  })
+  // console.log(pageNum)
+  //把输出的页数用过current:pageNum接口传进去，再把点击的当前页数据进行渲染
+  // const {data:res}=await users({current:pageNum})
+  // data.value=res.data
+  // totalPages.value=res.meta.pagination.total_pages
+  // page.value=res.meta.pagination.current_page
+}
+//点击搜索事件
+const searchSubmit=async (e:any)=>{
+  e.preventDefault()
+  getUserList({
+    name:formSearch.value.name,
+    email:formSearch.value.email,
+    current:1})
+  //点击搜索调用接口，把要搜索的内容通过接口传进去，再渲染，current:1是不知道是第几页，让显示到第一页
+  // const {data:res}=await users({name:formSearch.value.name,email:formSearch.value.email,current:1})
+  // data.value=res.data
+  // totalPages.value=res.meta.pagination.total_pages
+  // page.value=res.meta.pagination.current_page
+}
+//点击重置事件
+const searchRehoid=async (e:any)=>{
+  e.preventDefault()
+  getUserList({})
+  formSearch.value.name=''
+  formSearch.value.email=''
+}
+//上面三个接口维护会很麻烦，可以合并成一个接口
+//上面三个调用这个方法，不管传什么都把它们通过params传进去交给users进行处理
+const getUserList=async (params:any)=>{
+  const {data:res}=await users(params)
+  data.value=res.data
+  totalPages.value=res.meta.pagination.total_pages
+  page.value=res.meta.pagination.current_page
+}
+//
+const checxShowModal=(val)=>{
+  showModal.value=val
+}
 </script>
 
 <style scoped>

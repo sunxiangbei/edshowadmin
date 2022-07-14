@@ -35,6 +35,7 @@ export const useUserStore = defineStore({
             return this.permissions
         },
         getUserInfo():object{
+            console.log(1111111111111111111111111)
             //判断this.info是否是空对象,判断他id就知道是否是空对象
             if(this.info?.id){
                 console.log(11111)
@@ -85,7 +86,7 @@ export const useUserStore = defineStore({
                 const response=await User()
                 // console.log(response)
                 this.setUserinfo(response)
-                this.setAvatar(response.data.avatar)
+                this.setAvatar(response.avatar)
                 this.setUserName(response.data.name)
                 this.permissions(response.permissions)
                 // if(response.data){

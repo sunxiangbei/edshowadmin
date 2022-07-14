@@ -21,7 +21,7 @@ import {  ref } from 'vue'
 import { h, defineComponent,  Component } from 'vue'
 import { NIcon } from 'naive-ui'
 import {routeModuleList}  from '@/router/index'
-console.log(routeModuleList)
+// console.log(routeModuleList,'123')
 // function renderIcon (icon: Component) {
 //   return () => h(NIcon, null, { default: () => h(icon) })
 // }这个函数可以写成公共样式然后再导进来
@@ -33,8 +33,8 @@ const router = useRouter()
 const menuOptions = generatorMenu(routeModuleList)
 
 const handleUpdateValue=(key,item) =>{
-  console.log(key)
-  console.log(item)
+  // console.log(key)
+  // console.log(item,'11')
   router.push({name:key})
 }
 

@@ -18,9 +18,9 @@ const routes:Array<RouteRecordRaw>=[
         path:'/dashboard',
         name:routeName,
         component:Layout,
-        redirect:'dashboard/console',
+        redirect:'/dashboard/console',
         meta:{
-            title:'Dashboard',
+            title:'主控台',
             icon:renderIcon(Browsers),
             sort:0,
         },
@@ -28,10 +28,10 @@ const routes:Array<RouteRecordRaw>=[
             {
                 path:'console',
                 name:`${routeName}_console`,
-                meta:{
-                    title:'主控台',
-                    icon:renderIcon(Browsers)
-                },
+                // meta:{
+                //     // title:'主控台',
+                //     // icon:renderIcon(Browsers)
+                // },
                 component:()=>import('@/views/Dashboard/index.vue')
             }
         ]

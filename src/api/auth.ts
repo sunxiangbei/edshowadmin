@@ -15,7 +15,7 @@ export function User(data:object){
         method:'get',
     })
 }
-//
+//退出登录接口
 export function logout(){
     return request({
         url:'/api/auth/logout',
