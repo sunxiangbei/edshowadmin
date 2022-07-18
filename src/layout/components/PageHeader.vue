@@ -26,7 +26,7 @@ import {
 import {useUserStore} from '@/store/user';
 const userStore = useUserStore()
 
-// userStore.getUserInfo
+userStore.getUserInfo
 
 const options = ref([
   {

@@ -2,9 +2,9 @@
 <div>
   <div class="h-24 w-full bg-white p-3 mb-6">
     <div>
-      <span class="text-slate-400 pr-1">首页</span> / <span class="pl-1">用户列表</span>
+      <span class="text-slate-400 pr-1">首页</span> / <span class="pl-1">轮播列表</span>
       <div class="pt-3 text-xl text-black font-medium">
-        用户管理
+        轮播管理
       </div>
     </div>
   </div>
@@ -52,9 +52,7 @@
       </div>
     </div>
 <!--    v-if就是在清空上次表单内留下的值-->
-    <AddUser v-if="showModal" :showModal="showModal" @checxShowModal="checxShowModal" @reloadTable="reload"></AddUser>
-<!--   :user_id=""传一个id进去 -->
-    <EditUser v-if="showEditModal" :user_id="user_id" :showModal="showEditModal" @checxShowModal="checxEditModal" @reloadTable="reload"></EditUser>
+    <AddSlide v-if="showModal" :showModal="showModal" @checxShowModal="checxShowModal" @reloadTable="reload"></AddSlide>
   </div>
 </div>
 
@@ -65,7 +63,7 @@ import { h ,ref,onMounted} from 'vue'
 import {users} from "@/api/users";
 import { NButton, useMessage ,NAvatar,NSwitch,useLoadingBar } from 'naive-ui'
 import EditUser from '@/views/user/components/EditUser.vue'
-import AddUser from '@/views/user/components/AddUser.vue'
+import AddSlide from '@/views/slide/components/AddSlide.vue'
 const page=ref(1)
 const message=useMessage()
 const data=ref([])

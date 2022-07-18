@@ -115,12 +115,12 @@ const handleSubmit=(e:Event)=>{
       // console.log(res.access_token)
       //  成功调整首页
         const herf=window.location.href.split('redirect=')[1]
-        console.log(herf)
-        // if(herf){
-        //   router.push(herf)
-        // }else{
-        //   router.push('/Dashboard')
-        // }
+        // console.log(herf)
+        if(herf){
+          router.push(herf)
+        }else{
+          router.push('/Dashboard')
+        }
         // console.log(herf)
         // console.log(routr);
         setTimeout(()=>{router.push('/Dashboard')},500)

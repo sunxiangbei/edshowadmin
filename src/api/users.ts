@@ -8,11 +8,27 @@ export function users(params:any){
         params
     })
 }
-
+//添加用户信息
 export function addUser(data:any){
     return request({
         url:'/api/admin/users',
         method:'post',
         data,
+    })
+}
+//获取用户信息
+export function getUserInfo (userid:number){
+    return request({
+        url:`/api/admin/users/${userid}`,
+        method:'get',
+    })
+}
+
+//更新用户信息
+export function updataUser (userid:number,data:any){
+    return request({
+        url:`/api/admin/users/${userid}`,
+        method:'put',
+        data
     })
 }

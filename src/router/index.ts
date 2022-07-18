@@ -58,7 +58,7 @@ const router = createRouter({
 router.beforeEach((to,from,next)=>{
     //把各个页面的title进行动态赋值
     document.title=to.meta.title
-    console.log(to)
+    // console.log(to)
 //注意：方法一如果以后if判断hash地址很多可以定义一个数组进行判断
     // const pastArr=['/Home','/Home/uesrs','/Home/rights']
     // if(pastArr.indexOf(to.path)!==-1)
